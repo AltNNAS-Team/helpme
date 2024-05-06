@@ -1,0 +1,47 @@
+<head>
+    <script src="eruda.js"></script>
+    <script>eruda.init(),eruda.get('console').config.set("displayGetterVal",!0)</script>
+</head>
+<p>
+    instructions:
+    download ruffle.js and ruffle.wasm
+    create a folder, place this html, ruffle.js, and ruffle.wasm in there.
+    games will NOT WORK if you don't
+</p>
+<div id="container"></div><br>
+<input type="file">import swf file</input><br>
+<p id="error">no errors</p>
+<script>
+    window.onerror = function (event, source, lineno, colon, error) {
+        document.getElementById("error").innerHTML = "event: "+event+"\nsource: "+source+"\nlineno: "+lineno+"\ncolon: "+colon+"\nerror: "+error;
+    }
+
+    var input = document.querySelector('input[type=file]');
+    var textarea = document.querySelector('textarea');
+
+    function readFile(event) {
+        textarea.textContent = event.target.result;
+        console.log(event.target.result);
+    }
+
+    function changeFile() {
+        try {
+            var file = input.files[0];
+            var reader = new FileReader();
+            let ruffle = window.RufflePlayer.newest();
+            let player = ruffle.createPlayer();
+            let container = document.getElementById("container");
+            container.appendChild(player);
+            reader.readAsBinaryString(file);
+            reader.addEventListener('load', function() {
+                document.getElementById("error").innerHTML = "loading file";
+                player.load(reader.result);
+            });
+        } catch (e) {
+            document.getElementById("error").innerHTML = e;
+        }
+    }
+
+    input.addEventListener('change', changeFile);
+</script>
+<script src="ruffle.js"></script>
