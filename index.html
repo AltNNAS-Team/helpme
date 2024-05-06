@@ -32,7 +32,7 @@
             let player = ruffle.createPlayer();
             let container = document.getElementById("container");
             container.appendChild(player);
-            reader.readAsBinaryString(file);
+            reader.readAsDataURL(file);
             reader.addEventListener('load', function() {
                 document.getElementById("error").innerHTML = "loading file";
                 player.load(reader.result);
